@@ -1,1 +1,19 @@
-Nothing needs to be added to .gitignore since only a source file (index.html) was added without any build artifacts, dependencies, or temporary files.
+```
+# Database
+gigeon_messenger/instance/gigeon.db
+
+# Logs
+gigeon_messenger/server.log
+
+# Dependencies
+gigeon_messenger/venv/
+gigeon_messenger/.venv/
+gigeon_messenger/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment
+gigeon_messenger/.env
+gigeon_messenger/.env.*
+```
