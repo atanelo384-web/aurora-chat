@@ -2,39 +2,50 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Gigeon Messenger</title>
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
+<body class="desktop-body">
     <!-- Auth Screen -->
     <div id="auth-screen" class="auth-screen">
-        <div class="auth-container">
-            <h1 class="logo">Gigeon</h1>
-            <div class="auth-tabs">
+        <div class="auth-container mobile-auth-container">
+            <h1 class="logo mobile-logo">Gigeon</h1>
+            <p class="welcome-text">Добро пожаловать</p>
+            <div class="auth-tabs mobile-auth-tabs">
                 <button class="tab-btn active" data-tab="login">Вход</button>
                 <button class="tab-btn" data-tab="register">Регистрация</button>
             </div>
             
-            <form id="login-form" class="auth-form">
+            <form id="login-form" class="auth-form mobile-auth-form">
                 <input type="email" id="login-email" placeholder="Email" required>
                 <input type="password" id="login-password" placeholder="Пароль" required>
-                <button type="submit" class="btn-primary">Войти</button>
+                <button type="submit" class="btn-primary btn-primary-mobile">Войти</button>
             </form>
             
-            <form id="register-form" class="auth-form hidden">
+            <form id="register-form" class="auth-form hidden mobile-auth-form">
                 <input type="text" id="register-username" placeholder="Имя пользователя" required>
                 <input type="email" id="register-email" placeholder="Email" required>
                 <input type="password" id="register-password" placeholder="Пароль" required>
-                <button type="submit" class="btn-primary">Зарегистрироваться</button>
+                <button type="submit" class="btn-primary btn-primary-mobile">Зарегистрироваться</button>
             </form>
         </div>
     </div>
 
     <!-- Main App -->
     <div id="app-screen" class="app-screen hidden">
-        <!-- Server List -->
-        <div class="server-list">
+        <!-- Mobile Header -->
+        <div class="mobile-header" id="mobile-header">
+            <button class="menu-toggle" id="menu-toggle">☰</button>
+            <span class="mobile-server-name" id="mobile-server-name">Gigeon</span>
+            <button class="mobile-menu-btn" id="mobile-user-menu">○</button>
+        </div>
+        
+        <!-- Server List (Desktop) -->
+        <div class="server-list desktop-only">
             <div class="server-icon home" title="Главная">
                 <span>O</span>
             </div>
@@ -46,7 +57,8 @@
         </div>
 
         <!-- Channels Sidebar -->
-        <div class="channels-sidebar">
+        <div class="channels-sidebar mobile-sidebar" id="channels-sidebar">
+            <div class="sidebar-close" id="sidebar-close">×</div>
             <div class="server-header">
                 <h2 id="server-name">Gigeon Community</h2>
             </div>
@@ -67,20 +79,22 @@
 
         <!-- Chat Area -->
         <div class="chat-area">
-            <div class="chat-header">
+            <div class="chat-header mobile-chat-header">
+                <button class="channel-toggle desktop-only" id="channel-toggle">☰</button>
                 <span class="channel-icon">#</span>
                 <h3 id="channel-name">general</h3>
-                <div class="call-buttons">
+                <div class="call-buttons desktop-call-buttons">
                     <button class="call-btn" id="start-voice-call" title="Голосовой звонок">[V]</button>
                     <button class="call-btn" id="start-video-call" title="Видеозвонок">[C]</button>
                 </div>
+                <button class="mobile-members-btn" id="mobile-members-btn">👥</button>
             </div>
             
             <div class="messages-container" id="messages-container">
                 <!-- Messages will be loaded here -->
             </div>
             
-            <div class="message-input-container">
+            <div class="message-input-container mobile-message-input">
                 <div class="typing-indicator" id="typing-indicator"></div>
                 <div class="message-input-wrapper">
                     <button class="attach-btn" id="voice-record-btn" title="Голосовое сообщение">[M]</button>
@@ -91,12 +105,39 @@
         </div>
 
         <!-- Members Sidebar -->
-        <div class="members-sidebar">
+        <div class="members-sidebar desktop-only" id="members-sidebar">
             <h3>Участники</h3>
             <div id="members-container">
                 <!-- Members will be loaded here -->
             </div>
         </div>
+        
+        <!-- Mobile Members Panel -->
+        <div class="mobile-members-panel" id="mobile-members-panel">
+            <div class="panel-header">
+                <h3>Участники</h3>
+                <button class="panel-close" id="members-panel-close">×</button>
+            </div>
+            <div id="mobile-members-container">
+                <!-- Members will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Nav -->
+    <div class="mobile-bottom-nav" id="mobile-bottom-nav">
+        <button class="nav-item active" data-nav="channels">
+            <span class="nav-icon">#</span>
+            <span class="nav-label">Каналы</span>
+        </button>
+        <button class="nav-item" data-nav="members">
+            <span class="nav-icon">👥</span>
+            <span class="nav-label">Участники</span>
+        </button>
+        <button class="nav-item" data-nav="home">
+            <span class="nav-icon">○</span>
+            <span class="nav-label">Главная</span>
+        </button>
     </div>
 
     <!-- Settings Modal -->

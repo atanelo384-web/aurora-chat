@@ -674,3 +674,126 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+
+// Device Detection and Mobile UI
+function detectDevice() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                     (window.innerWidth <= 768);
+    
+    if (isMobile) {
+        document.body.classList.remove('desktop-body');
+        document.body.classList.add('mobile-body');
+    } else {
+        document.body.classList.remove('mobile-body');
+        document.body.classList.add('desktop-body');
+    }
+    
+    return isMobile;
+}
+
+// Mobile UI functions
+function initMobileUI() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
+    const channelsSidebar = document.getElementById('channels-sidebar');
+    const mobileMembersBtn = document.getElementById('mobile-members-btn');
+    const membersPanel = document.getElementById('mobile-members-panel');
+    const membersPanelClose = document.getElementById('members-panel-close');
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    // Menu toggle
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            channelsSidebar.classList.toggle('open');
+        });
+    }
+    
+    // Sidebar close
+    if (sidebarClose) {
+        sidebarClose.addEventListener('click', () => {
+            channelsSidebar.classList.remove('open');
+        });
+    }
+    
+    // Members panel
+    if (mobileMembersBtn) {
+        mobileMembersBtn.addEventListener('click', () => {
+            membersPanel.classList.toggle('open');
+        });
+    }
+    
+    if (membersPanelClose) {
+        membersPanelClose.addEventListener('click', () => {
+            membersPanel.classList.remove('open');
+        });
+    }
+    
+    // Bottom navigation
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            navItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            
+            const navType = item.dataset.nav;
+            
+            if (navType === 'channels') {
+                channelsSidebar.classList.add('open');
+                membersPanel.classList.remove('open');
+            } else if (navType === 'members') {
+                membersPanel.classList.add('open');
+                channelsSidebar.classList.remove('open');
+            } else if (navType === 'home') {
+                channelsSidebar.classList.remove('open');
+                membersPanel.classList.remove('open');
+                // Navigate to home/server list
+                loadServers();
+            }
+        });
+    });
+    
+    // Close panels when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!channelsSidebar.contains(e.target) && !menuToggle?.contains(e.target)) {
+            channelsSidebar.classList.remove('open');
+        }
+        if (!membersPanel.contains(e.target) && !mobileMembersBtn?.contains(e.target)) {
+            membersPanel.classList.remove('open');
+        }
+    });
+}
+
+// Update showApp function to include mobile detection
+const originalShowApp = showApp;
+showApp = function() {
+    originalShowApp();
+    detectDevice();
+    initMobileUI();
+    
+    // Listen for window resize
+    window.addEventListener('resize', () => {
+        detectDevice();
+    });
+};
+
+// Also update loadMembers to populate mobile members container
+const originalLoadMembers = loadMembers;
+loadMembers = function() {
+    originalLoadMembers();
+    
+    // Clone members to mobile panel
+    const container = document.getElementById('members-container');
+    const mobileContainer = document.getElementById('mobile-members-container');
+    
+    if (container && mobileContainer) {
+        mobileContainer.innerHTML = container.innerHTML;
+    }
+};
+
+// Run device detection on load
+document.addEventListener('DOMContentLoaded', () => {
+    detectDevice();
+    
+    window.addEventListener('resize', () => {
+        detectDevice();
+    });
+});
